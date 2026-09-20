@@ -1,0 +1,47 @@
+[
+  {
+    "id": "hello",
+    "name": "1. Hello, SHIN",
+    "ja": "1. SHINを動かす",
+    "grant": false,
+    "hint": "Edit the greeting and run again. This is the real SHIN compiler and VM.",
+    "hint_ja": "挨拶を書き換えて再実行してください。実際のSHINコンパイラとVMで動きます。",
+    "source": "fn greet(name) {\n    return \"Hello, \" + name + \"!\";\n}\nprint(greet(\"world\"));\n"
+  },
+  {
+    "id": "checked",
+    "name": "2. Permission + validation",
+    "ja": "2. 権限と検証",
+    "grant": true,
+    "hint": "First run without the demo permission, then grant it and run again. The demo echoes text; it is not an AI model.",
+    "hint_ja": "最初はデモの許可なしで実行し、次に許可して再実行してください。デモは文字を返すだけで、実際のAIモデルではありません。",
+    "source": "permit model \"demo\";\nbudget steps = 1000;\n\nlet draft = infer(\"demo\", \"Hello from SHIN.\");\nlet answer = check_text(draft, 100);\nprint(answer);\n"
+  },
+  {
+    "id": "untrusted",
+    "name": "3. Unchecked output is rejected",
+    "ja": "3. 未検証の値は拒否",
+    "grant": true,
+    "hint": "This example intentionally fails. Replace print(draft) with print(check_text(draft, 100)) to fix it.",
+    "hint_ja": "意図的に失敗する例です。print(draft) を print(check_text(draft, 100)) に直すと動きます。",
+    "source": "permit model \"demo\";\nlet draft = infer(\"demo\", \"Check me before use.\");\nprint(draft);\n"
+  },
+  {
+    "id": "structured",
+    "name": "4. Check structured data",
+    "ja": "4. JSONの構造を確認",
+    "grant": true,
+    "hint": "The demo returns the supplied JSON. Change 3 to a quoted string to see the type check reject it. Validation checks structure, not truth.",
+    "hint_ja": "デモは渡したJSONを返します。数値3を文字列に変えると型検証で拒否されます。構造の検証であり、内容の真実性の保証ではありません。",
+    "source": "permit model \"demo\";\nlet draft = infer(\"demo\", \"{\\\"title\\\":\\\"SHIN notebook\\\",\\\"count\\\":3}\");\nlet item = check_json(draft, {\"title\":\"text\", \"count\":\"number\"});\nprint(item[\"title\"]);\nprint(item[\"count\"]);\n"
+  },
+  {
+    "id": "budget",
+    "name": "5. Stop at the execution budget",
+    "ja": "5. 実行予算で停止",
+    "grant": false,
+    "hint": "This loop is intentionally endless. SHIN stops it when its instruction budget is exhausted.",
+    "hint_ja": "意図的な無限ループです。命令数の予算を使い切るとSHINが停止します。",
+    "source": "budget steps = 100;\nlet count = 0;\nwhile true {\n    count = count + 1;\n}\nprint(count);\n"
+  }
+]

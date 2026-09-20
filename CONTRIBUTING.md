@@ -26,6 +26,7 @@ Python 3.9+ and Git are sufficient to run from source. No third-party runtime pa
 python3 -m unittest discover -s tests -v
 python3 -m shin check examples/ai.shin
 python3 tools/build_site.py --check
+python3 tools/build_playground.py --check
 ```
 
 For runtime or compiler performance changes, also run `python3 benchmarks/run.py` and report the environment, identical workloads and before/after measurements. For packaging changes, run `python3 tools/build_release.py` and exercise the resulting zipapp. CI checks Python 3.9, 3.11 and 3.13.
@@ -43,3 +44,5 @@ Never put credentials, real private prompts, user records or confidential source
 Contributions are accepted under the repository's existing MIT license. Preserve applicable copyright and license notices. Submit only material you have the right to contribute; no separate CLA is required by this project.
 
 Review is voluntary and no response time is guaranteed. For current decision-making and maintainer responsibilities, see [GOVERNANCE.md](GOVERNANCE.md).
+
+Browser runtime changes: regenerate `runtime.json` with `python3 tools/build_playground.py`. See [playground architecture](docs/playground/README.md) for the trust boundary and browser checks.

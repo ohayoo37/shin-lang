@@ -16,9 +16,24 @@ jobs:
       - run: python -m unittest discover -s tests -v
       - run: python -m shin check examples/ai.shin
       - run: python tools/build_site.py --check
+      - run: python tools/build_playground.py --check
       - run: python tools/build_release.py
       - run: python dist/shin-0.2.0a2.pyz run examples/ai.shin --allow-model demo
       - run: python dist/shin-0.2.0a2.pyz init /tmp/shin-ci-site --template website
       - run: python dist/shin-0.2.0a2.pyz build /tmp/shin-ci-site --output /tmp/shin-ci-export --path / --path /about
       - run: python -m pip install .
       - run: shin --version
+
+  installation:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.13'
+      - run: python -m pip install .
+      - run: python tools/smoke_install.py

@@ -48,5 +48,7 @@
   "community_body": "SHIN is open source under the MIT license. Help with code, translations, documentation, examples or bug reports. First-time contributors are welcome.",
   "contribute": "Contribution guide (English) →",
   "discuss": "Questions and ideas ↗",
-  "report": "Report a bug ↗"
+  "report": "Report a bug ↗",
+  "playground": "Try in your browser →",
+  "install": "Install & learn →"
 }

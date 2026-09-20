@@ -1,5 +1,9 @@
 # SHIN
 
+[**Try SHIN in your browser**](https://ohayoo37.github.io/shin-lang/playground/) · [Install on Windows, macOS or Linux](https://ohayoo37.github.io/shin-lang/start/)
+
+The playground runs the actual Python reference VM locally through Pyodide. No account or API key; demo model calls only echo text. Browser runtime assets download from jsDelivr on first run.
+
 **Flexible thinking. Explicit authority.**
 
 An experimental language for websites, web applications, CMS and AI workflows: a small compiler, a dedicated stack VM, explicit model capabilities, and validation boundaries for model output. Version **0.2.0a2** is a working reference implementation, not a production sandbox or a native-performance claim.

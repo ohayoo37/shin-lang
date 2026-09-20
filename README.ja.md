@@ -1,5 +1,9 @@
 # SHIN
 
+[**ブラウザでSHINを試す**](https://ohayoo37.github.io/shin-lang/playground/?lang=ja) · [Windows・macOS・Linux導入ガイド（英語）](https://ohayoo37.github.io/shin-lang/start/)
+
+体験ページは実際のPython製VMをPyodideでブラウザ内実行します。アカウント・APIキーは不要で、デモモデルは文字を返すだけです。初回はjsDelivrから実行環境を読み込みます。
+
 **自由な発想。明示された権限。**
 
 AIの判断と、プログラムが持つ権限を分ける実験的プログラミング言語です。独自の構文を専用バイトコードへ変換し、小さなVMで実行します。**v0.2.0a2は動く初期実装です。「世界最速」「完全に安全」を達成した言語ではありません。**

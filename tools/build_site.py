@@ -36,7 +36,7 @@ def generate():
 <link rel="stylesheet" href="{prefix}site.css"><script src="{prefix}site.js" defer></script></head>
 <body><a class="skip" href="#main">{t['skip']}</a><div class="wrap">
 <nav aria-label="{t['nav']}"><a class="brand" href="./">SHIN</a><div class="navlinks"><a class="hide-mobile" href="#start">{t['start']}</a><a href="{REPO}">GitHub ↗</a><details class="languages"><summary aria-label="{t['language']}">{t['name']}</summary><div class="language-menu">{menu}</div></details></div></nav>
-<main id="main"><div class="hero"><div><div class="eyebrow">WEB · APPS · CMS · AI</div><h1>{t['headline1']}<br><em>{t['headline2']}</em></h1><p class="lead">{t['lead']}</p><span class="pill">v0.2.0a2 / EXPERIMENTAL / MIT</span><div class="actions"><a class="button primary" href="#start">{t['try']}</a><a class="button" href="{REPO}/releases">{t['release']}</a></div></div>
+<main id="main"><div class="hero"><div><div class="eyebrow">WEB · APPS · CMS · AI</div><h1>{t['headline1']}<br><em>{t['headline2']}</em></h1><p class="lead">{t['lead']}</p><span class="pill">v0.2.0a2 / EXPERIMENTAL / MIT</span><div class="actions"><a class="button primary" href="{prefix}playground/{'?lang=ja' if lang == 'ja' else ''}">{t['playground']}</a><a class="button" href="{REPO}/releases">{t['release']}</a></div></div>
 <div class="codebox"><div class="codehead"><span>answer.shin</span><span>SHIN</span></div><pre><span class="kw">permit model</span> <span class="str">"demo"</span>;
 <span class="kw">budget</span> steps = 1000;
 
@@ -48,7 +48,7 @@ def generate():
 print(answer(<span class="str">"Hello, SHIN."</span>));</pre><div class="result"><b>✓</b> {t['grant']}<br><b>✓</b> {t['validate']}<br>{t['mock']}</div></div></div>
 <div class="strip">{metrics}</div>
 <section id="web"><div class="sectionhead"><h2>{t['web_title']}</h2></div><div class="cards">{cards}</div><p class="note limits">{t['limits']}</p></section>
-<section id="start"><div class="sectionhead"><h2>{t['start_title']}</h2></div><div class="quick"><div><p>{t['requirements']}</p><p>{t['local_model']}</p><a class="button" href="{REPO}/blob/main/docs/web.md">{t['guide']}</a></div><div class="codebox"><div class="codehead"><span>TERMINAL</span><button class="copy" id="copy" type="button" data-success="{t['copied']}" data-failure="{t['copy_failed']}">{t['copy']}</button></div><pre id="commands">git clone https://github.com/ohayoo37/shin-lang.git
+<section id="start"><div class="sectionhead"><h2>{t['start_title']}</h2></div><div class="quick"><div><p>{t['requirements']}</p><p>{t['local_model']}</p><p><a href="{prefix}start/">{t['install']}</a></p><a class="button" href="{REPO}/blob/main/docs/web.md">{t['guide']}</a></div><div class="codebox"><div class="codehead"><span>TERMINAL</span><button class="copy" id="copy" type="button" data-success="{t['copied']}" data-failure="{t['copy_failed']}">{t['copy']}</button></div><pre id="commands">git clone https://github.com/ohayoo37/shin-lang.git
 cd shin-lang
 python3 -m shin init my-site --template website
 python3 -m shin serve my-site --port 8000</pre><div class="result" id="copy-status" aria-live="polite">{t['open_local']}</div></div></div></section>
@@ -57,7 +57,7 @@ python3 -m shin serve my-site --port 8000</pre><div class="result" id="copy-stat
 <footer class="footer"><div>SHIN · 2026 · MIT</div><div><a href="{REPO}/blob/main/SECURITY.md">{t['security']}</a><a href="{REPO}/blob/main/docs/language.md">{t['spec']}</a></div></footer></div></body></html>
 '''
         outputs[DOCS / route / 'index.html'] = page
-    outputs[DOCS / 'sitemap.xml'] = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' + ''.join(f'<url><loc>{BASE}{lang}/</loc></url>' for lang in LOCALES) + '</urlset>\n'
+    outputs[DOCS / 'sitemap.xml'] = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' + ''.join(f'<url><loc>{BASE}{lang}/</loc></url>' for lang in LOCALES + ['playground', 'start']) + '</urlset>\n'
     return outputs
 
 

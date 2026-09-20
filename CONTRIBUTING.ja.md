@@ -22,6 +22,7 @@ Python 3.9以降とGitで実行できます。テストにクラウドのAPIキ�
 python3 -m unittest discover -s tests -v
 python3 -m shin check examples/ai.shin
 python3 tools/build_site.py --check
+python3 tools/build_playground.py --check
 ```
 
 性能変更では `python3 benchmarks/run.py` も実行し、同じ条件の変更前後の値と環境を示してください。配布関連の変更では `python3 tools/build_release.py` と生成されたzipappを確認します。CIはPython 3.9・3.11・3.13で実行します。
