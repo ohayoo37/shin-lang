@@ -8,7 +8,7 @@ import zipapp
 root=Path(__file__).resolve().parents[1]
 out=root/'dist'
 out.mkdir(exist_ok=True)
-archive=out/'shin-0.1.0a1.pyz'
+archive=out/'shin-0.2.0a1.pyz'
 with tempfile.TemporaryDirectory() as temporary:
     stage=Path(temporary)
     shutil.copytree(root/'shin',stage/'shin',ignore=shutil.ignore_patterns('__pycache__','*.pyc'))

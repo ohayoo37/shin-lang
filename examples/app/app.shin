@@ -1,0 +1,13 @@
+fn page(title, content) { return html("<!doctype html><html lang=\"ja\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>{{title}}</title><link rel=\"stylesheet\" href=\"/assets/site.css\"><script src=\"/assets/app.js\" defer></script></head><body><header><strong>SHIN Studio</strong><nav><a href=\"/\">Home</a><a href=\"/about\">About</a></nav></header><main>{{content}}</main><footer>Made with SHIN / 芯 · Explicit authority, flexible ideas.</footer></body></html>", {"title":title,"content":content}); }
+
+fn home(request) {
+    return respond(200, page("Estimate",html("<h1>見積もりミニアプリ</h1><p class=\"lead\">ブラウザの入力をJSON APIへ送り、SHINで計算します。</p><div class=\"app-panel\"><form id=\"estimate\"><label for=\"hours\">作業時間</label><input id=\"hours\" type=\"number\" value=\"5\" required><label for=\"rate\">時間単価</label><input id=\"rate\" type=\"number\" value=\"3000\" required><button>計算する</button></form><p id=\"result\" role=\"status\"></p></div>",{})));
+}
+fn estimate(request) {
+    let req=check_json(request,{"method":"text","path":"text","params":"record","query":"record","body":"record"});
+    let hours=get(req["body"],"hours",0); let rate=get(req["body"],"rate",0);
+    if !is_number(hours) || !is_number(rate) { return respond(422,{"error":"numbers required"}); }
+    if hours < 0 || hours > 1000 || rate < 0 || rate > 1000000 { return respond(422,{"error":"out of range"}); }
+    return respond(200,{"total":hours*rate,"currency":"JPY"});
+}
+fn about(request) { return respond(200,page("About",html("<h1>アプリ開発の入り口</h1><p>SHINの関数と、ブラウザのJavaScriptを組み合わせます。</p>",{}))); }

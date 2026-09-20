@@ -7,7 +7,7 @@ import sys
 import time
 
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
-from shin import compile_source, VM
+from shin import compile_source, VM, __version__
 
 SOURCE='let i=0; let total=0; while i<1000 {total=total+i; i=i+1;} assert(total==499500);'
 program=compile_source(SOURCE)
@@ -34,7 +34,7 @@ vm=VM(program)
 vm.run()
 root=Path(__file__).resolve().parents[1]
 print(json.dumps({
-    'python':platform.python_version(), 'platform':platform.system(),
+    'shin':__version__, 'python':platform.python_version(), 'platform':platform.system(),
     'machine':platform.machine(),'rounds':7,'statistic':'median milliseconds',
     'compile_ms':measure(lambda:compile_source(SOURCE)),
     'vm_execute_ms':measure(lambda:VM(program).run()),

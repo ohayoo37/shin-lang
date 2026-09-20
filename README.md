@@ -2,7 +2,7 @@
 
 **Flexible thinking. Explicit authority.**
 
-An experimental language for AI workflows: a small compiler, a dedicated stack VM, explicit model capabilities, and validation boundaries for model output. Version **0.1.0a1** is a working reference implementation, not a production sandbox or a native-performance claim.
+An experimental language for websites, web applications, CMS and AI workflows: a small compiler, a dedicated stack VM, explicit model capabilities, and validation boundaries for model output. Version **0.2.0a1** is a working reference implementation, not a production sandbox or a native-performance claim.
 
 [日本語](README.ja.md) · [Website](https://ohayoo37.github.io/shin-lang/) · [Language reference](docs/language.md) · [Security model](SECURITY.md) · [Roadmap](docs/roadmap.md)
 
@@ -45,6 +45,17 @@ shin --version
 
 The install uses setuptools as a build dependency. No package has been published to PyPI; install from this repository or its release archive.
 
+## Build a website, app, API or CMS
+
+```sh
+python3 -m shin init my-site --template website
+python3 -m shin serve my-site --port 8000
+```
+
+Open `http://127.0.0.1:8000`. Choose `--template app`, `api` or `cms` for other starters. The new web toolkit includes routing, escaped HTML fragments, JSON responses, static assets, static site export, and an opt-in SQLite CMS editor with drafts and publication. [Web/CMS guide](docs/web.md) · [Generated website demo](https://ohayoo37.github.io/shin-lang/demo/) · [Example projects](examples/).
+
+This alpha targets websites and browser/server applications. It does not compile native mobile/desktop apps. The included server is development-only; production hosting, authentication for your own API routes and operational controls remain the host's responsibility.
+
 ## What works
 
 - Own lexer and compiler → SHIN bytecode → stack VM. No translation through Python `eval` or `exec`.
@@ -83,7 +94,7 @@ python3 benchmarks/run.py
 
 ## Performance, honestly
 
-The Python reference VM is slower than native Python on the included sum-loop benchmark. The checked-in [measurement](benchmarks/reference.json) compares the same 1,000-iteration loop, reports compile and execution time separately, and includes the environment and seven-run median. It excludes startup and AI inference. The runtime source is approximately 33 KB, excluding Python itself; this is **not** a standalone executable size or a memory-footprint measurement.
+The Python reference VM is slower than native Python on the included sum-loop benchmark. The checked-in [measurement](benchmarks/reference.json) compares the same 1,000-iteration loop, reports compile and execution time separately, and includes the environment and seven-run median. It excludes startup and AI inference. Runtime source size is reported in the benchmark, excluding Python itself; this is **not** a standalone executable size or a memory-footprint measurement.
 
 Our next performance milestone is a compatible native/Wasm runtime with measured parity and a differential test suite. No speedup, memory-safety proof, prompt-injection immunity or universal novelty is claimed.
 

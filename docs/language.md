@@ -1,4 +1,4 @@
-# SHIN 0.1 language reference
+# SHIN 0.2 language reference
 
 UTF-8 source, `.shin` extension, `//` comments, semicolon-terminated simple statements. ASCII identifiers; JSON-style double-quoted strings. Whitespace is insignificant. This is a dynamically checked language; static type inference is not implemented.
 
@@ -65,3 +65,10 @@ assert VM(program).run() == ['5']
 ```
 
 Host adapter call signature: `callback(prompt: str, timeout_seconds: float, max_response_bytes: int) -> str`. Adapters are trusted Python code. The callback must honor its timeout, avoid retaining private data unnecessarily and return bounded UTF-8 text. A VM instance is intended for a single run.
+
+
+## Web toolkit additions (0.2)
+
+See [Web/CMS reference](web.md) for `init`, `serve`, `build`, `token`, route manifests and deployment boundaries. New builtins: `html(literal, bindings)`, `html_join(fragments)`, `link(url, text)`, `url_part(text)`, `respond(status, body)`, `get(record,key,default)`, `is_number(value)`, `content_list("literal-collection")`, `content_get("literal-collection",slug)`. `HTML` is an opaque fragment type that can be passed, stored and combined through these builtins; it is not an ordinary string. HTML values cannot be JSON-serialized. Collection operations preserve existing trust checks.
+
+`permit content "pages";` declares read access to published content. This requires a matching host grant and configured content store, separate from model grants. The compiler's content effect inventory is conservative like its model inventory. HTTP request data and content results are Untrusted; use `check_json` to validate structure before using values. Exact fields are documented in web.md. No database write capability is exposed to SHIN code.

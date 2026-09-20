@@ -1,0 +1,6 @@
+
+fn health(request) { return respond(200, {"status":"ok","language":"SHIN"}); }
+fn echo(request) {
+    let req = check_json(request, {"method":"text","path":"text","params":"record","query":"record","body":"record"});
+    return respond(200, {"received":req["body"]});
+}

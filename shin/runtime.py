@@ -4,6 +4,8 @@ import json
 import math
 import time
 from .compiler import ShinError, DEFAULT_LIMITS
+from .markup import HTML, render, link, join
+from urllib.parse import quote
 
 
 @dataclass(frozen=True)
@@ -14,7 +16,7 @@ class Untrusted:
 def size(value, ceiling, depth=0):
     if depth > 32:
         raise ShinError('value nesting exceeds 32')
-    if isinstance(value, Untrusted):
+    if isinstance(value, (Untrusted, HTML)):
         return size(value.value, ceiling, depth + 1)
     if value is None or type(value) is bool:
         return 8
@@ -80,8 +82,10 @@ def encode(value):
 
 class VM:
     def __init__(self, program, allow_models=(), models=None, input_value=None,
-                 output=None, limits=None):
+                 output=None, limits=None, content=None, allow_content=()):
         self.program = program
+        self.content = content
+        self.allow_content = set(allow_content)
         self.allowed = set(allow_models)
         self.models = dict(models or {})
         self.limits = dict(DEFAULT_LIMITS)
@@ -114,15 +118,33 @@ class VM:
             raise ShinError('allocation_bytes budget exceeded')
         return value
 
-    def run(self):
+    def preflight(self):
+        if self.program.content_effects - self.allow_content:
+            raise ShinError("host denied content capability")
+        if self.program.content_effects and self.content is None:
+            raise ShinError("content store not configured")
         denied = self.program.effects - self.allowed
         if denied:
             raise ShinError('host denied model capability: ' + ', '.join(sorted(denied)))
         missing = self.program.effects - self.models.keys()
         if missing:
             raise ShinError('model not configured: ' + ', '.join(sorted(missing)))
+
+    def run(self):
+        self.preflight()
         self.execute(self.program.main, [self.globals], 0)
         return self.lines
+
+    def invoke(self, name, args):
+        self.run()
+        if name not in self.program.functions:
+            raise ShinError('unknown entry function')
+        fn = self.program.functions[name]
+        if len(args) != len(fn.params):
+            raise ShinError('wrong entry argument count')
+        for arg in args:
+            self.account(arg)
+        return self.account(self.execute(fn.code, [dict(zip(fn.params, args))], 1))
 
     def execute(self, code, scopes, depth):
         if depth > self.limits['depth']:
@@ -250,7 +272,9 @@ class VM:
     def builtin(self, name, args):
         arity = {'print': 1, 'len': 1, 'str': 1, 'push': 2, 'keys': 1,
                  'assert': 1, 'infer': 2, 'check_text': 2, 'check_json': 2,
-                 'json': 1, 'input': 0}
+                 'json': 1, 'input': 0, 'get': 3, 'html': 2, 'link': 2,
+                 'html_join': 1, 'is_number': 1, 'respond': 2, 'url_part': 1,
+                 'content_list': 1, 'content_get': 2}
         if len(args) != arity[name]:
             raise ShinError(f'{name} expects {arity[name]} arguments')
         if name == 'input':
@@ -302,6 +326,31 @@ class VM:
             return result
         for value in args:
             trusted(value)
+        if name in ('content_list', 'content_get'):
+            collection = text(args[0])
+            if collection not in self.program.content_permits or collection not in self.allow_content or self.content is None:
+                raise ShinError('content capability denied')
+            result = self.content.public_list(collection) if name == 'content_list' else self.content.public_get(collection, text(args[1]))
+            return Untrusted(encode(result))
+        if name == 'is_number':
+            return type(args[0]) in (int, float)
+        if name == 'get':
+            if type(args[0]) is not dict:
+                raise ShinError('get expects a record')
+            return args[0].get(text(args[1]), args[2])
+        if name == 'html':
+            return render(args[0], args[1])
+        if name == 'link':
+            return link(*args)
+        if name == 'html_join':
+            return join(args[0])
+        if name == 'url_part':
+            return quote(text(args[0]), safe='')
+        if name == 'respond':
+            status, body = args
+            if type(status) is not int or status not in (200,201,202,400,401,403,404,409,422,500,503):
+                raise ShinError('unsupported response status')
+            return {'status': status, 'body': body}
         if name == 'print':
             rendered = args[0] if type(args[0]) is str else encode(args[0])
             n = len(rendered.encode('utf-8')) + 1

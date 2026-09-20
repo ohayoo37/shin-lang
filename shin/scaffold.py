@@ -1,0 +1,82 @@
+"""Small, working projects rather than a generated dependency tree."""
+from pathlib import Path
+import json
+from .compiler import ShinError
+
+PAGE_START='<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{{title}}</title><link rel="stylesheet" href="/assets/site.css"></head><body><header><strong>SHIN Studio</strong><nav><a href="/">Home</a><a href="/about">About</a></nav></header><main>{{content}}</main><footer>Made with SHIN / 芯 · Explicit authority, flexible ideas.</footer></body></html>'
+
+def page_function():
+    return 'fn page(title, content) { return html('+json.dumps(PAGE_START,ensure_ascii=False)+', {"title":title,"content":content}); }\n'
+
+WEBSITE=page_function()+r'''
+fn home(request) {
+    let content = html("<p class=\"eyebrow\">BUILT WITH SHIN</p><h1>アイデアを、動くサービスに。</h1><p class=\"lead\">小さなWebサイトから、データを扱うアプリまで。自分の言葉と設計で、次のサービスを作ろう。</p><div class=\"grid\"><article><h2>Websites</h2><p>ページとコンテンツを自由に組み合わせる。</p></article><article><h2>Applications</h2><p>関数をJSON APIとして届ける。</p></article><article><h2>Content</h2><p>下書きと公開を、明確に分ける。</p></article></div>", {});
+    return respond(200, page("SHIN Studio", content));
+}
+fn about(request) { return respond(200, page("About", html("<h1>小さく始めて、育てる。</h1><p>このページはSHINの関数が生成しています。</p>", {}))); }
+'''
+API='''
+fn health(request) { return respond(200, {"status":"ok","language":"SHIN"}); }
+fn echo(request) {
+    let req = check_json(request, {"method":"text","path":"text","params":"record","query":"record","body":"record"});
+    return respond(200, {"received":req["body"]});
+}
+'''
+CMS='permit content "pages";\n'+page_function()+r'''
+fn home(request) {
+    let data = check_json(content_list("pages"), {"items":"array"});
+    let cards = []; let i = 0;
+    while i < len(data["items"]) {
+        let item = data["items"][i];
+        let heading = link("/pages/" + url_part(item["slug"]), item["title"]);
+        cards = push(cards, html("<article><h2>{{heading}}</h2><p>{{excerpt}}</p></article>", {"heading":heading,"excerpt":item["excerpt"]}));
+        i = i + 1;
+    }
+    return respond(200, page("SHIN Journal", html("<p class=\"eyebrow\">SHIN JOURNAL</p><h1>日々の発見を、届けよう。</h1><p class=\"lead\">公開した記事だけが、この場所に並びます。</p><div class=\"grid\">{{cards}}</div>", {"cards":html_join(cards)})));
+}
+fn article(request) {
+    let req = check_json(request, {"method":"text","path":"text","params":"record","query":"record","body":"record"});
+    let data = check_json(content_get("pages", req["params"]["slug"]), {"found":"boolean","item":"record"});
+    if !data["found"] { return respond(404, "Not found"); }
+    let item=data["item"];
+    return respond(200, page(item["title"], html("<h1>{{title}}</h1><div class=\"body\">{{body}}</div>", {"title":item["title"],"body":item["body"]})));
+}
+fn about(request) { return respond(200, page("About", html("<h1>SHIN Journalについて</h1><p>SHIN CMSで編集・公開する、小さなジャーナルです。</p>", {}))); }
+'''
+APP=page_function()+r'''
+fn home(request) {
+    return respond(200, page("Estimate",html("<h1>見積もりミニアプリ</h1><p class=\"lead\">ブラウザの入力をJSON APIへ送り、SHINで計算します。</p><div class=\"app-panel\"><form id=\"estimate\"><label for=\"hours\">作業時間</label><input id=\"hours\" type=\"number\" value=\"5\" required><label for=\"rate\">時間単価</label><input id=\"rate\" type=\"number\" value=\"3000\" required><button>計算する</button></form><p id=\"result\" role=\"status\"></p></div>",{})));
+}
+fn estimate(request) {
+    let req=check_json(request,{"method":"text","path":"text","params":"record","query":"record","body":"record"});
+    let hours=get(req["body"],"hours",0); let rate=get(req["body"],"rate",0);
+    if !is_number(hours) || !is_number(rate) { return respond(422,{"error":"numbers required"}); }
+    if hours < 0 || hours > 1000 || rate < 0 || rate > 1000000 { return respond(422,{"error":"out of range"}); }
+    return respond(200,{"total":hours*rate,"currency":"JPY"});
+}
+fn about(request) { return respond(200,page("About",html("<h1>アプリ開発の入り口</h1><p>SHINの関数と、ブラウザのJavaScriptを組み合わせます。</p>",{}))); }
+'''
+
+
+def scaffold(directory,kind):
+    root=Path(directory)
+    if root.exists():
+        raise ShinError('target already exists; choose a new directory')
+    sources={'website':WEBSITE,'api':API,'cms':CMS,'app':APP}
+    if kind not in sources:
+        raise ShinError('unknown project template')
+    source=sources[kind]
+    if kind=='app':
+        # Script tags are only allowed as static external references by markup.py.
+        source=source.replace('</head>', '<script src=\\"/assets/app.js\\" defer></script></head>')
+    routes=[{'method':'GET','path':'/','handler':'home'},{'method':'GET','path':'/about','handler':'about'}]
+    if kind=='api': routes=[{'method':'GET','path':'/api/health','handler':'health'},{'method':'POST','path':'/api/echo','handler':'echo'}]
+    if kind=='cms': routes.append({'method':'GET','path':'/pages/:slug','handler':'article'})
+    if kind=='app': routes.append({'method':'POST','path':'/api/estimate','handler':'estimate'})
+    root.mkdir(parents=True)
+    (root/'app.shin').write_text(source,encoding='utf-8')
+    (root/'app.json').write_text(json.dumps({'routes':routes},indent=2)+'\n')
+    (root/'.gitignore').write_text('*.sqlite*\n*.token\nsite-output/\n')
+    if kind=='app':
+        (root/'public').mkdir()
+        (root/'public/app.js').write_text("""document.getElementById('estimate').addEventListener('submit',async event=>{event.preventDefault();const out=document.getElementById('result');try{const response=await fetch('/api/estimate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({hours:Number(document.getElementById('hours').value),rate:Number(document.getElementById('rate').value)})});const data=await response.json();out.textContent=response.ok?data.total.toLocaleString()+' 円':data.error;}catch{out.textContent='通信に失敗しました';}});""")

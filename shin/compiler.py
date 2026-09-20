@@ -28,12 +28,15 @@ class Program:
     permits: set
     effects: set
     limits: dict
+    content_permits: set = field(default_factory=set)
+    content_effects: set = field(default_factory=set)
 
 
 DEFAULT_LIMITS = {'steps': 100000, 'depth': 64, 'value_bytes': 65536,
                   'output_bytes': 65536, 'wall_ms': 5000, 'allocation_bytes': 8388608}
 BUILTINS = {'print', 'len', 'str', 'push', 'keys', 'assert', 'infer',
-            'check_text', 'check_json', 'json', 'input'}
+            'check_text', 'check_json', 'json', 'input', 'get', 'html', 'link',
+            'html_join', 'is_number', 'respond', 'url_part', 'content_list', 'content_get'}
 RESERVED = BUILTINS | {'fn', 'let', 'if', 'else', 'while', 'return', 'permit',
                        'model', 'budget', 'true', 'false', 'null'}
 TOKEN = re.compile(r'(?P<space>\s+)|(?P<comment>//[^\n]*)|'
@@ -68,6 +71,7 @@ class Compiler:
         self.i = 0
         self.functions = {}
         self.permits, self.effects = set(), set()
+        self.content_permits, self.content_effects = set(), set()
         self.limits = {}
         self.calls = []
         self.code = []
@@ -110,13 +114,16 @@ class Compiler:
     def compile(self):
         while self.token.text != '<eof>':
             if self.accept('permit'):
-                self.take('model')
+                kind = self.take().text
+                if kind not in ('model', 'content'):
+                    self.error('permit requires model or content')
+                permits = self.permits if kind == 'model' else self.content_permits
                 if self.token.kind != 'string':
                     self.error('model permit requires a string literal')
                 name = self.string()
-                if name in self.permits:
+                if name in permits:
                     self.error(f'duplicate permit {name!r}')
-                self.permits.add(name)
+                permits.add(name)
                 self.take(';')
             elif self.accept('budget'):
                 name = self.take().text
@@ -143,7 +150,10 @@ class Compiler:
         missing = self.effects - self.permits
         if missing:
             raise ShinError('missing permit model: ' + ', '.join(sorted(missing)))
-        return Program(self.code, self.functions, self.permits, self.effects, self.limits)
+        if self.content_effects - self.content_permits:
+            raise ShinError('missing permit content: ' + ', '.join(sorted(self.content_effects - self.content_permits)))
+        return Program(self.code, self.functions, self.permits, self.effects, self.limits,
+                       self.content_permits, self.content_effects)
 
     def function(self):
         name = self.name()
@@ -302,11 +312,14 @@ class Compiler:
         elif token.kind == 'name':
             name = self.take().text
             if self.accept('('):
-                if name == 'infer':
+                if name in ('infer', 'content_list', 'content_get', 'html'):
                     if self.token.kind != 'string':
-                        self.error('infer model name must be a literal for effect analysis')
+                        self.error(name + ' first argument must be a string literal')
                     model = json.loads(self.token.text)
-                    self.effects.add(model)
+                    if name == 'infer':
+                        self.effects.add(model)
+                    elif name.startswith('content_'):
+                        self.content_effects.add(model)
                 n = self.items(')')
                 self.calls.append((name, n, token.line))
                 self.emit('CALL', [name, n], token.line)

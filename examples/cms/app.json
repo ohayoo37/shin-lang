@@ -1,0 +1,19 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/",
+      "handler": "home"
+    },
+    {
+      "method": "GET",
+      "path": "/about",
+      "handler": "about"
+    },
+    {
+      "method": "GET",
+      "path": "/pages/:slug",
+      "handler": "article"
+    }
+  ]
+}

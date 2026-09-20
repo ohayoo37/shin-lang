@@ -1,15 +1,14 @@
 {
-  "shin": "0.2.0a1",
   "python": "3.9.6",
   "platform": "Darwin",
   "machine": "arm64",
   "rounds": 7,
   "statistic": "median milliseconds",
-  "compile_ms": 0.043,
-  "vm_execute_ms": 11.7485,
-  "python_loop_ms": 0.0293,
+  "compile_ms": 0.0601,
+  "vm_execute_ms": 11.5174,
+  "python_loop_ms": 0.0276,
   "vm_steps": 15013,
   "logical_allocation_bytes": 40056,
-  "runtime_source_bytes": 72238,
+  "runtime_source_bytes": 33289,
   "note": "Single sum loop, no AI or startup; CPython reference VM, not native code. Logical allocation is not RSS."
 }

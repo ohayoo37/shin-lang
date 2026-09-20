@@ -7,3 +7,6 @@ dist/
 .env
 .env.*
 .DS_Store
+
+*.sqlite*
+*.token

@@ -1,0 +1,14 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/api/health",
+      "handler": "health"
+    },
+    {
+      "method": "POST",
+      "path": "/api/echo",
+      "handler": "echo"
+    }
+  ]
+}

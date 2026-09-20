@@ -5,6 +5,8 @@ from pathlib import Path
 from . import __version__, compile_source, VM, ShinError
 from .models import load_models, mock_model
 from .runtime import unique_object
+import os
+import secrets
 
 
 def read_file(path):
@@ -38,13 +40,68 @@ def main(argv=None):
             command.add_argument('--model-config')
             command.add_argument('--input', help='JSON input file, explicitly selected by the host')
             command.add_argument('--stats', action='store_true')
+    init = sub.add_parser('init', help='create a website, API, app or CMS project')
+    init.add_argument('directory')
+    init.add_argument('--template', choices=['website','api','app','cms'], default='website')
+    token = sub.add_parser('token', help='create a new local CMS admin token file')
+    token.add_argument('path')
+    for action in ('serve','build'):
+        command=sub.add_parser(action)
+        command.add_argument('directory')
+        command.add_argument('--content-db')
+        command.add_argument('--allow-content', action='append', default=[])
+        command.add_argument('--allow-model', action='append', default=[])
+        command.add_argument('--model-config')
+        if action=='serve':
+            command.add_argument('--port',type=int,default=8000)
+            command.add_argument('--admin-token-file')
+        else:
+            command.add_argument('--output',required=True)
+            command.add_argument('--path',action='append',default=[])
+            command.add_argument('--base-path',default='')
     args = parser.parse_args(argv)
     try:
+        if args.command=='init':
+            from .scaffold import scaffold
+            scaffold(args.directory,args.template)
+            print('Created '+args.template+' project: '+args.directory)
+            return 0
+        if args.command=='token':
+            with os.fdopen(os.open(args.path,os.O_WRONLY|os.O_CREAT|os.O_EXCL,0o600),'w') as handle:
+                handle.write(secrets.token_urlsafe(32)+'\n')
+            print('Created admin token file (keep it private): '+args.path)
+            return 0
+        if args.command in ('serve','build'):
+            from .web import Application
+            from .content import ContentStore
+            store=ContentStore(args.content_db,args.allow_content) if args.content_db else None
+            models=load_models(read_json(args.model_config)) if args.model_config else {'demo':mock_model()}
+            token=read_file(args.admin_token_file).strip() if getattr(args,'admin_token_file',None) else None
+            app=Application(args.directory,content=store,allow_content=args.allow_content,
+                            admin_token=token,allow_models=args.allow_model,models=models)
+            if args.command=='build':
+                from .sitebuild import build
+                count=build(app,args.output,args.path,args.base_path)
+                print('Built '+str(count)+' pages into '+args.output)
+            else:
+                from wsgiref.simple_server import make_server, WSGIRequestHandler
+                class Handler(WSGIRequestHandler):
+                    def handle(self):
+                        self.connection.settimeout(10)
+                        return super().handle()
+                    def log_message(self,*args):
+                        pass  # Do not log user queries or content.
+                with make_server('127.0.0.1',args.port,app,handler_class=Handler) as server:
+                    print('SHIN development server: http://127.0.0.1:'+str(server.server_port),flush=True)
+                    if token:
+                        print('CMS editor: /_shin/admin (token authentication required)',flush=True)
+                    server.serve_forever()
+            return 0
         program = compile_source(read_file(args.source))
         if args.command == 'check':
             print(json.dumps({'valid': True, 'effects': sorted(program.effects),
                               'functions': sorted(program.functions),
-                              'limits': program.limits}, ensure_ascii=False))
+                              'limits': program.limits, 'content_effects': sorted(program.content_effects)}, ensure_ascii=False))
         elif args.command == 'disasm':
             for name, code in [('main', program.main)] + [(k, f.code) for k, f in program.functions.items()]:
                 print(f'[{name}]')
@@ -58,6 +115,8 @@ def main(argv=None):
             if args.stats:
                 print(json.dumps({'steps': vm.steps, 'logical_allocation_bytes': vm.allocated,
                                   'output_bytes': vm.output_bytes}), file=sys.stderr)
+        return 0
+    except KeyboardInterrupt:
         return 0
     except (ShinError, OSError, ValueError, UnicodeError, RecursionError) as exc:
         safe = str(exc) if not isinstance(exc, RecursionError) else 'input nesting limit exceeded'

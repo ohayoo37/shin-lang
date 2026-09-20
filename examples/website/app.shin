@@ -1,0 +1,7 @@
+fn page(title, content) { return html("<!doctype html><html lang=\"ja\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>{{title}}</title><link rel=\"stylesheet\" href=\"/assets/site.css\"></head><body><header><strong>SHIN Studio</strong><nav><a href=\"/\">Home</a><a href=\"/about\">About</a></nav></header><main>{{content}}</main><footer>Made with SHIN / 芯 · Explicit authority, flexible ideas.</footer></body></html>", {"title":title,"content":content}); }
+
+fn home(request) {
+    let content = html("<p class=\"eyebrow\">BUILT WITH SHIN</p><h1>アイデアを、動くサービスに。</h1><p class=\"lead\">小さなWebサイトから、データを扱うアプリまで。自分の言葉と設計で、次のサービスを作ろう。</p><div class=\"grid\"><article><h2>Websites</h2><p>ページとコンテンツを自由に組み合わせる。</p></article><article><h2>Applications</h2><p>関数をJSON APIとして届ける。</p></article><article><h2>Content</h2><p>下書きと公開を、明確に分ける。</p></article></div>", {});
+    return respond(200, page("SHIN Studio", content));
+}
+fn about(request) { return respond(200, page("About", html("<h1>小さく始めて、育てる。</h1><p>このページはSHINの関数が生成しています。</p>", {}))); }

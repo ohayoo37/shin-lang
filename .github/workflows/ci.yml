@@ -16,4 +16,8 @@ jobs:
       - run: python -m unittest discover -s tests -v
       - run: python -m shin check examples/ai.shin
       - run: python tools/build_release.py
-      - run: python dist/shin-0.1.0a1.pyz run examples/ai.shin --allow-model demo
+      - run: python dist/shin-0.2.0a1.pyz run examples/ai.shin --allow-model demo
+      - run: python dist/shin-0.2.0a1.pyz init /tmp/shin-ci-site --template website
+      - run: python dist/shin-0.2.0a1.pyz build /tmp/shin-ci-site --output /tmp/shin-ci-export --path / --path /about
+      - run: python -m pip install .
+      - run: shin --version

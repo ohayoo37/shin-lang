@@ -1,16 +1,21 @@
-# SHIN 0.1.0-alpha.1
+# SHIN 0.2.0-alpha.1 — Web, Apps & CMS
 
-The first executable reference release of **SHIN / 芯**: an experimental AI-workflow language built around explicit authority and checked model output.
+SHIN now supports server-rendered websites, browser applications, JSON APIs and a small persistent CMS.
 
-Includes a compiler and bytecode VM, functions/recursion, block scopes, arrays/records, model-effect checks, execution budgets, mock and loopback Ollama adapters, CLI, examples, Japanese/English guides, and 48 tests.
+- `shin init --template website|app|api|cms` creates runnable starter projects.
+- A WSGI adapter maps literal/parameterized routes to SHIN functions, with fresh VM budgets per request.
+- Literal HTML templates escape data; opaque HTML fragments, safe links and static CSS/JS assets support page composition.
+- SQLite-backed Content Studio provides token-authenticated editing, drafts/publication and optimistic revision checks. SHIN's content capability can read only published records.
+- `shin build` exports explicit HTML paths and assets to a new static directory, including subdirectory-hosting support.
+- Tests cover API behavior, publication lifecycle, persistence, authentication, XSS escaping, origin/host checks, traversal, stale edits and static export. The browser CMS save/publish flow and estimate-app API were verified locally.
 
-Download `shin-0.1.0a1.pyz` and run it with Python 3.9+:
+[Web/CMS guide](https://github.com/ohayoo37/shin-lang/blob/main/docs/web.md) · [Generated website demo](https://ohayoo37.github.io/shin-lang/demo/)
+
+Download `shin-0.2.0a1.pyz` (Python 3.9+ required), then:
 
 ```sh
-python3 shin-0.1.0a1.pyz --version
-python3 shin-0.1.0a1.pyz run your-program.shin
+python3 shin-0.2.0a1.pyz init my-site --template website
+python3 shin-0.2.0a1.pyz serve my-site
 ```
 
-The `.pyz` bundles only SHIN; it is not a standalone native binary. `SHA256SUMS` contains the artifact checksum. Source archives include examples and tests. Package version: `0.1.0a1`. MIT license.
-
-This is an alpha, not a production sandbox. The Python reference VM is slower than Python on the included sum-loop benchmark. Native/Wasm execution, static typing, parallel scheduling and OS isolation are future work. Ollama's protocol is fixture-tested; live model inference and quality were not tested for this release. See SECURITY.md and benchmarks/reference.json for precise limits and measurements.
+This remains an experimental Python reference implementation. The bundled server is for loopback development; production needs an appropriate WSGI host and operational/authentication controls. Native mobile/desktop builds, user accounts, payment processing, general ORM, multi-tenant CMS and OS isolation are not implemented. No speedup or production-security claim is made. `SHA256SUMS` verifies the release artifact. MIT licensed.

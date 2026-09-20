@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "shin-language"
-version = "0.1.0a1"
+version = "0.2.0a1"
 description = "An experimental AI orchestration language with explicit effects and bounded execution"
 readme = "README.md"
 requires-python = ">=3.9"
@@ -24,3 +24,6 @@ Issues = "https://github.com/ohayoo37/shin-lang/issues"
 
 [tool.setuptools]
 packages = ["shin"]
+
+[tool.setuptools.package-data]
+shin = ["assets/*"]

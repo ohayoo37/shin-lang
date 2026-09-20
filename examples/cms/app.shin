@@ -1,0 +1,22 @@
+permit content "pages";
+fn page(title, content) { return html("<!doctype html><html lang=\"ja\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>{{title}}</title><link rel=\"stylesheet\" href=\"/assets/site.css\"></head><body><header><strong>SHIN Studio</strong><nav><a href=\"/\">Home</a><a href=\"/about\">About</a></nav></header><main>{{content}}</main><footer>Made with SHIN / 芯 · Explicit authority, flexible ideas.</footer></body></html>", {"title":title,"content":content}); }
+
+fn home(request) {
+    let data = check_json(content_list("pages"), {"items":"array"});
+    let cards = []; let i = 0;
+    while i < len(data["items"]) {
+        let item = data["items"][i];
+        let heading = link("/pages/" + url_part(item["slug"]), item["title"]);
+        cards = push(cards, html("<article><h2>{{heading}}</h2><p>{{excerpt}}</p></article>", {"heading":heading,"excerpt":item["excerpt"]}));
+        i = i + 1;
+    }
+    return respond(200, page("SHIN Journal", html("<p class=\"eyebrow\">SHIN JOURNAL</p><h1>日々の発見を、届けよう。</h1><p class=\"lead\">公開した記事だけが、この場所に並びます。</p><div class=\"grid\">{{cards}}</div>", {"cards":html_join(cards)})));
+}
+fn article(request) {
+    let req = check_json(request, {"method":"text","path":"text","params":"record","query":"record","body":"record"});
+    let data = check_json(content_get("pages", req["params"]["slug"]), {"found":"boolean","item":"record"});
+    if !data["found"] { return respond(404, "Not found"); }
+    let item=data["item"];
+    return respond(200, page(item["title"], html("<h1>{{title}}</h1><div class=\"body\">{{body}}</div>", {"title":item["title"],"body":item["body"]})));
+}
+fn about(request) { return respond(200, page("About", html("<h1>SHIN Journalについて</h1><p>SHIN CMSで編集・公開する、小さなジャーナルです。</p>", {}))); }
