@@ -1,0 +1,4 @@
+permit model "assistant";
+// The model must already be installed and running on the host.
+let draft = infer("assistant", "Explain explicit permissions in one short sentence.");
+print(check_text(draft, 1000));

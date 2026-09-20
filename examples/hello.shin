@@ -1,0 +1,3 @@
+// UTF-8 strings, records, immutable collection operations.
+let language = {"name": "SHIN", "idea": "自由な発想、明示された権限。"};
+print(language["name"] + ": " + language["idea"]);

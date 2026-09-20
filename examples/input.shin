@@ -1,0 +1,3 @@
+let request = check_json(input(), {"name": "text", "count": "number"});
+assert(request["count"] >= 0 && request["count"] <= 100);
+print("Hello, " + request["name"]);

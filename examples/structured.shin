@@ -1,0 +1,5 @@
+permit model "demo";
+let draft = infer("demo", "{\"title\":\"First release\",\"score\":95}");
+let result = check_json(draft, {"title": "text", "score": "number"});
+assert(result["score"] >= 0 && result["score"] <= 100);
+print(result["title"]);

@@ -1,0 +1,12 @@
+budget steps = 20000;
+fn fibonacci(n) {
+    if n <= 1 { return n; }
+    return fibonacci(n - 1) + fibonacci(n - 2);
+}
+let results = [];
+let i = 0;
+while i < 10 {
+    results = push(results, fibonacci(i));
+    i = i + 1;
+}
+print(results);

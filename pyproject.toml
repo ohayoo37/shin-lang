@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "shin-language"
+version = "0.1.0a1"
+description = "An experimental AI orchestration language with explicit effects and bounded execution"
+readme = "README.md"
+requires-python = ">=3.9"
+license = {text = "MIT"}
+authors = [{name = "SHIN contributors"}]
+keywords = ["language", "ai", "capabilities", "bytecode"]
+classifiers = ["Development Status :: 3 - Alpha", "Programming Language :: Python :: 3"]
+dependencies = []
+
+[project.scripts]
+shin = "shin.__main__:main"
+
+[project.urls]
+Homepage = "https://ohayoo37.github.io/shin-lang/"
+Repository = "https://github.com/ohayoo37/shin-lang"
+Issues = "https://github.com/ohayoo37/shin-lang/issues"
+
+[tool.setuptools]
+packages = ["shin"]

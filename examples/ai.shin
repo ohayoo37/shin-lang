@@ -1,0 +1,9 @@
+// demo echoes the prompt; no AI server or download is required.
+permit model "demo";
+budget steps = 1000;
+budget output_bytes = 2048;
+fn checked_answer(prompt) {
+    let draft = infer("demo", prompt);
+    return check_text(draft, 200);
+}
+print(checked_answer("SHIN: AIの出力は、検証してから使う。"));
