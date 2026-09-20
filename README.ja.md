@@ -1,8 +1,8 @@
-# SHIN / 芯
+# SHIN
 
 **自由な発想。明示された権限。**
 
-AIの判断と、プログラムが持つ権限を分ける実験的プログラミング言語です。独自の構文を専用バイトコードへ変換し、小さなVMで実行します。**v0.2.0a1は動く初期実装です。「世界最速」「完全に安全」を達成した言語ではありません。**
+AIの判断と、プログラムが持つ権限を分ける実験的プログラミング言語です。独自の構文を専用バイトコードへ変換し、小さなVMで実行します。**v0.2.0a2は動く初期実装です。「世界最速」「完全に安全」を達成した言語ではありません。**
 
 [English](README.md) · [公式ページ](https://ohayoo37.github.io/shin-lang/) · [言語仕様](docs/language.md) · [セキュリティの範囲](SECURITY.md)
 
@@ -77,3 +77,9 @@ python3 -m shin disasm examples/functions.shin
 ```
 
 開発方針は[ロードマップ](docs/roadmap.md)に記載しています。MITライセンスで公開しています。PyPIへの登録はまだ行っていません。
+
+## Website languages
+
+[English](https://ohayoo37.github.io/shin-lang/en/) · [日本語](https://ohayoo37.github.io/shin-lang/ja/) · [Español](https://ohayoo37.github.io/shin-lang/es/) · [Français](https://ohayoo37.github.io/shin-lang/fr/) · [Deutsch](https://ohayoo37.github.io/shin-lang/de/) · [Português](https://ohayoo37.github.io/shin-lang/pt-BR/) · [简体中文](https://ohayoo37.github.io/shin-lang/zh-CN/) · [한국어](https://ohayoo37.github.io/shin-lang/ko/)
+
+公開紹介サイトは8言語対応です。技術文書は英語中心で、日本語READMEも用意しています。Webサイトのテンプレートと公開デモは英語、アプリとCMS編集画面は現在日本語です。翻訳の更新は `docs/i18n/*.json` を編集して `python3 tools/build_site.py` を実行します。

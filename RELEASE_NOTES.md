@@ -1,3 +1,23 @@
+# SHIN 0.2.0-alpha.2 — International website
+
+SHIN's public website is now English-first and available in eight languages: English, Japanese, Spanish, French, German, Portuguese, Simplified Chinese and Korean.
+
+- Dedicated language URLs, a language menu, localized metadata and search-engine language links.
+- Plain SHIN branding across the current website, documentation and starter projects.
+- English website starter and public SHIN-generated demo.
+- Shared CSS and a small optional copy-button script; reading and switching languages work without JavaScript.
+- Translation dictionaries and a reproducible site generator, checked in CI.
+
+[Website](https://ohayoo37.github.io/shin-lang/) · [日本語](https://ohayoo37.github.io/shin-lang/ja/) · [Demo](https://ohayoo37.github.io/shin-lang/demo/)
+
+Download `shin-0.2.0a2.pyz` and verify it against `SHA256SUMS`. Python 3.9+ is required. Run `python3 shin-0.2.0a2.pyz --help` to get started.
+
+This remains an experimental release. Technical documentation is primarily English, with a Japanese README; the app and CMS editor interfaces currently use Japanese. Native compilation, OS isolation, accounts, payments and multi-tenant CMS are not implemented.
+
+Validation: all 74 existing tests pass locally; static pages are generated consistently for all eight locales.
+
+---
+
 # SHIN 0.2.0-alpha.1 — Web, Apps & CMS
 
 SHIN now supports server-rendered websites, browser applications, JSON APIs and a small persistent CMS.

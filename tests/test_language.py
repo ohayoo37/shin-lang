@@ -51,7 +51,7 @@ class LanguageTests(unittest.TestCase):
             run('if 1 { print(1); }')
 
     def test_unicode(self):
-        self.assertEqual(run('print("芯 🌱"); print(len("日本語"));'), ['芯 🌱','3'])
+        self.assertEqual(run('print("SHIN 🌱"); print(len("日本語"));'), ['SHIN 🌱','3'])
 
     def test_empty_values(self):
         self.assertEqual(run('print([]); print({}); print(null); fn f() {return;} print(f());'), ['[]','{}','null','null'])

@@ -1,8 +1,8 @@
-# SHIN / 芯
+# SHIN
 
 **Flexible thinking. Explicit authority.**
 
-An experimental language for websites, web applications, CMS and AI workflows: a small compiler, a dedicated stack VM, explicit model capabilities, and validation boundaries for model output. Version **0.2.0a1** is a working reference implementation, not a production sandbox or a native-performance claim.
+An experimental language for websites, web applications, CMS and AI workflows: a small compiler, a dedicated stack VM, explicit model capabilities, and validation boundaries for model output. Version **0.2.0a2** is a working reference implementation, not a production sandbox or a native-performance claim.
 
 [日本語](README.ja.md) · [Website](https://ohayoo37.github.io/shin-lang/) · [Language reference](docs/language.md) · [Security model](SECURITY.md) · [Roadmap](docs/roadmap.md)
 
@@ -101,3 +101,9 @@ Our next performance milestone is a compatible native/Wasm runtime with measured
 ## Contribute
 
 See [CONTRIBUTING.md](CONTRIBUTING.md). Language behavior and security boundaries should be proposed with executable examples and tests. This alpha can change syntax. MIT licensed.
+
+## Website languages
+
+[English](https://ohayoo37.github.io/shin-lang/en/) · [日本語](https://ohayoo37.github.io/shin-lang/ja/) · [Español](https://ohayoo37.github.io/shin-lang/es/) · [Français](https://ohayoo37.github.io/shin-lang/fr/) · [Deutsch](https://ohayoo37.github.io/shin-lang/de/) · [Português](https://ohayoo37.github.io/shin-lang/pt-BR/) · [简体中文](https://ohayoo37.github.io/shin-lang/zh-CN/) · [한국어](https://ohayoo37.github.io/shin-lang/ko/)
+
+The public website is available in eight languages. Technical documentation is available in English, with a Japanese README. The website starter and public demo use English; the app and CMS editor interfaces currently use Japanese. Edit `docs/i18n/*.json` and run `python3 tools/build_site.py` to update the public pages.
