@@ -113,6 +113,17 @@ class Renderer(HTMLParser):
 def render(template,bindings):
     if type(template) is not str or type(bindings) is not dict:
         raise ShinError('html expects a literal template and a record')
+    # HTMLParser versions differ on truncated markup; reject it before parsing.
+    markup = re.compile(r'<!--.*?-->|<!doctype\s+html>|</?[A-Za-z][^<>]*>', re.S | re.I)
+    cursor = 0
+    while True:
+        opening = template.find('<', cursor)
+        if opening < 0:
+            break
+        token = markup.match(template, opening)
+        if token is None:
+            raise ShinError('HTML template contains incomplete or unsupported markup')
+        cursor = token.end()
     renderer=Renderer(bindings)
     renderer.feed(template)
     renderer.close()
