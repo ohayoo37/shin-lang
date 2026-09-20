@@ -83,3 +83,14 @@ python3 -m shin disasm examples/functions.shin
 [English](https://ohayoo37.github.io/shin-lang/en/) · [日本語](https://ohayoo37.github.io/shin-lang/ja/) · [Español](https://ohayoo37.github.io/shin-lang/es/) · [Français](https://ohayoo37.github.io/shin-lang/fr/) · [Deutsch](https://ohayoo37.github.io/shin-lang/de/) · [Português](https://ohayoo37.github.io/shin-lang/pt-BR/) · [简体中文](https://ohayoo37.github.io/shin-lang/zh-CN/) · [한국어](https://ohayoo37.github.io/shin-lang/ko/)
 
 公開紹介サイトは8言語対応です。技術文書は英語中心で、日本語READMEも用意しています。Webサイトのテンプレートと公開デモは英語、アプリとCMS編集画面は現在日本語です。翻訳の更新は `docs/i18n/*.json` を編集して `python3 tools/build_site.py` を実行します。
+
+## オープンソース開発への参加
+
+SHINは[MITライセンス](LICENSE)のオープンソースです。コード修正、翻訳、ドキュメント、サンプル、不具合報告、レビューなどで参加できます。初めての貢献も歓迎します。
+
+- [日本語の参加ガイド](CONTRIBUTING.ja.md) · [English guide](CONTRIBUTING.md)
+- [質問・アイデアの相談](https://github.com/ohayoo37/shin-lang/discussions)
+- [不具合報告・改善提案](https://github.com/ohayoo37/shin-lang/issues/new/choose)
+- [運営・レビュー方針](GOVERNANCE.md) · [行動規範](CODE_OF_CONDUCT.md)
+
+Forkして修正を提案でき、公式版には保守担当者のレビューを経て取り込みます。脆弱性は[非公開の報告窓口](https://github.com/ohayoo37/shin-lang/security/advisories/new)へ送ってください。

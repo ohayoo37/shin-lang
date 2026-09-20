@@ -26,6 +26,7 @@ def generate():
         cards = ''.join(f'<article class="card"><span class="number">{label}</span><h3>{t[key+"_title"]}</h3><p>{t[key+"_body"]}</p>{link}</article>' for key, label, link in [
             ('website', 'WEBSITE', f'<p><a href="{prefix}demo/">{t["demo"]}</a> <small lang="en">(English)</small></p>'),
             ('app', 'APPLICATION', ''), ('cms', 'CMS', f'<p><a href="{REPO}/blob/main/docs/web.md">{t["guide"]}</a></p>')])
+        contributing = 'CONTRIBUTING.ja.md' if lang == 'ja' else 'CONTRIBUTING.md'
         metrics = ''.join(f'<div><strong>{t[key]}</strong><span>{t[key+"_note"]}</span></div>' for key in ['deps', 'bytecode', 'effects'])
         page = f'''<!doctype html>
 <html lang="{lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
@@ -51,7 +52,8 @@ print(answer(<span class="str">"Hello, SHIN."</span>));</pre><div class="result"
 cd shin-lang
 python3 -m shin init my-site --template website
 python3 -m shin serve my-site --port 8000</pre><div class="result" id="copy-status" aria-live="polite">{t['open_local']}</div></div></div></section>
-<section><div class="sectionhead"><h2>{t['status_title']}</h2></div><div class="status"><div><p>{t['status_body']}</p><a href="{REPO}/tree/main/tests">{t['tests']}</a></div><div><p class="note">{t['performance']}</p><p><a href="{REPO}/blob/main/docs/roadmap.md">{t['roadmap']} ↗</a></p></div></div></section></main>
+<section><div class="sectionhead"><h2>{t['status_title']}</h2></div><div class="status"><div><p>{t['status_body']}</p><a href="{REPO}/tree/main/tests">{t['tests']}</a></div><div><p class="note">{t['performance']}</p><p><a href="{REPO}/blob/main/docs/roadmap.md">{t['roadmap']} ↗</a></p></div></div></section>
+<section id="community"><div class="sectionhead"><h2>{t['community_title']}</h2></div><p class="lead">{t['community_body']}</p><div class="actions"><a class="button primary" href="{REPO}/blob/main/{contributing}">{t['contribute']}</a><a class="button" href="{REPO}/discussions">{t['discuss']}</a><a class="button" href="{REPO}/issues/new/choose">{t['report']}</a></div></section></main>
 <footer class="footer"><div>SHIN · 2026 · MIT</div><div><a href="{REPO}/blob/main/SECURITY.md">{t['security']}</a><a href="{REPO}/blob/main/docs/language.md">{t['spec']}</a></div></footer></div></body></html>
 '''
         outputs[DOCS / route / 'index.html'] = page

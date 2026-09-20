@@ -1,0 +1,25 @@
+name: Improvement proposal / 改善提案
+description: Propose a focused improvement / 具体的な改善を提案する
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem or use case / 解決したい課題
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed behavior and example / 改善案と使用例
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives and compatibility / 代替案・互換性への影響
+  - type: textarea
+    id: contribution
+    attributes:
+      label: How would you like to help? / 協力できること（任意）
+      description: Ideas, implementation, tests, documentation and translations are all welcome.

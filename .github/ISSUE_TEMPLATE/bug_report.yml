@@ -1,0 +1,38 @@
+name: Bug report / 不具合報告
+description: Report a reproducible problem / 再現する問題を報告する
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: "Please search existing issues first. Never include secrets or private data. Report vulnerabilities privately via Security, not here. 英語・日本語どちらでも記入できます。"
+  - type: input
+    id: version
+    attributes:
+      label: SHIN version or commit / バージョン
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: OS and Python version / 実行環境
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Minimal example and steps / 最小の再現例と手順
+      description: Include commands or a small SHIN program using synthetic data.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior / 期待する動作
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior and error / 実際の動作とエラー
+    validations:
+      required: true

@@ -22,7 +22,7 @@ SHIN is an execution-policy experiment, **not an OS security boundary**. Do not 
 
 ## Reporting
 
-Use the repository's **Security → Report a vulnerability** private channel when enabled. If unavailable, open an issue asking for a private contact without including exploit details or secrets. Only the latest alpha is maintained. There has been no independent security audit.
+Use the enabled [Security → Report a vulnerability](https://github.com/ohayoo37/shin-lang/security/advisories/new) private channel. Do not include vulnerability details or secrets in public Issues or Discussions. If the private channel is unavailable, ask for a private contact without publishing sensitive details. Only the latest alpha is maintained. There has been no independent security audit.
 
 ## Web/CMS additions in 0.2
 

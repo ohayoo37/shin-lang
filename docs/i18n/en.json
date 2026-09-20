@@ -43,5 +43,10 @@
   "tests": "Browse the tests ↗",
   "security": "Security",
   "spec": "Language specification",
-  "roadmap": "Roadmap"
+  "roadmap": "Roadmap",
+  "community_title": "Built in the open. Improved together.",
+  "community_body": "SHIN is open source under the MIT license. Help with code, translations, documentation, examples or bug reports. First-time contributors are welcome.",
+  "contribute": "Contribution guide (English) →",
+  "discuss": "Questions and ideas ↗",
+  "report": "Report a bug ↗"
 }

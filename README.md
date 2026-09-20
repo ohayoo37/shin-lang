@@ -100,7 +100,14 @@ Our next performance milestone is a compatible native/Wasm runtime with measured
 
 ## Contribute
 
-See [CONTRIBUTING.md](CONTRIBUTING.md). Language behavior and security boundaries should be proposed with executable examples and tests. This alpha can change syntax. MIT licensed.
+SHIN is open source under the [MIT license](LICENSE). Code, translations, documentation, examples, bug reports and reviews are welcome, including first-time contributions.
+
+- [Contribution guide](CONTRIBUTING.md) · [日本語の参加ガイド](CONTRIBUTING.ja.md)
+- [Ask questions and discuss ideas](https://github.com/ohayoo37/shin-lang/discussions)
+- [Report a bug or propose an improvement](https://github.com/ohayoo37/shin-lang/issues/new/choose)
+- [Governance and review decisions](GOVERNANCE.md) · [Code of Conduct](CODE_OF_CONDUCT.md)
+
+Fork the repository and submit a pull request; accepted changes enter the official version after maintainer review. Report vulnerabilities through the [private security channel](https://github.com/ohayoo37/shin-lang/security/advisories/new).
 
 ## Website languages
 

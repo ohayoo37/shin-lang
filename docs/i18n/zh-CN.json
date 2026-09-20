@@ -43,5 +43,10 @@
   "tests": "查看测试 ↗",
   "security": "安全说明",
   "spec": "语言规范",
-  "roadmap": "路线图"
+  "roadmap": "路线图",
+  "community_title": "开放开发，共同改进。",
+  "community_body": "SHIN 是采用 MIT 许可证的开源项目。欢迎参与代码修改、翻译、文档、示例或问题反馈，也欢迎首次参与开源的贡献者。",
+  "contribute": "贡献指南（英语）→",
+  "discuss": "提问与交流想法 ↗",
+  "report": "报告问题 ↗"
 }

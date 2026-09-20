@@ -1,0 +1,11 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Questions and ideas / 質問・アイデア
+    url: https://github.com/ohayoo37/shin-lang/discussions
+    about: Ask questions, discuss designs and share your projects.
+  - name: Private vulnerability report / 脆弱性の非公開報告
+    url: https://github.com/ohayoo37/shin-lang/security/advisories/new
+    about: Do not disclose security vulnerabilities in public issues.
+  - name: Contribution guide / 参加方法
+    url: https://github.com/ohayoo37/shin-lang/blob/main/CONTRIBUTING.md
+    about: Development workflow, translations and review expectations.

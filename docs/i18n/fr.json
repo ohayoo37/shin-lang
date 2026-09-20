@@ -43,5 +43,10 @@
   "tests": "Voir les tests ↗",
   "security": "Sécurité",
   "spec": "Spécification du langage",
-  "roadmap": "Feuille de route"
+  "roadmap": "Feuille de route",
+  "community_title": "Un développement ouvert, des progrès ensemble.",
+  "community_body": "SHIN est un projet open source sous licence MIT. Contribuez au code, aux traductions, à la documentation, aux exemples ou aux signalements de bugs. Les premières contributions sont les bienvenues.",
+  "contribute": "Guide de contribution (anglais) →",
+  "discuss": "Questions et idées ↗",
+  "report": "Signaler un bug ↗"
 }
